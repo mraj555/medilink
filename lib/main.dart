@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medilink/screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,11 +29,18 @@ class MyApp extends StatelessWidget {
         ),
         appBarTheme: AppBarTheme(
           elevation: 0,
-          centerTitle: true,
+          centerTitle: false,
           backgroundColor: Color(0xFFF8FAFB),
           foregroundColor: Color(0xFF1E293B),
+          titleTextStyle: TextStyle(
+            color: Color(0xFF1E293B),
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Inter',
+          ),
         ),
       ),
+      home: HomeScreen(),
     );
   }
 }
