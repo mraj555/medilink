@@ -63,7 +63,10 @@ class HomeScreen extends StatelessWidget {
                     hintStyle: TextStyle(color: Colors.grey[400]),
                     prefixIcon: Icon(Icons.search, color: Color(0xFF00BFA5)),
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 20,
+                    ),
                   ),
                 ),
               ),
@@ -99,7 +102,11 @@ class HomeScreen extends StatelessWidget {
                     icon: Icons.child_care,
                     color: const Color(0xFF66BB6A),
                   ),
-                  SpecialityCard(title: 'ENT', icon: Icons.hearing, color: const Color(0xFF8D6E63)),
+                  SpecialityCard(
+                    title: 'ENT',
+                    icon: Icons.hearing,
+                    color: const Color(0xFF8D6E63),
+                  ),
                   SpecialityCard(
                     title: 'Gynecology',
                     icon: Icons.pregnant_woman,
@@ -115,11 +122,18 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Text(
                     "Available Doctors",
-                    style: TextStyle(fontSize: 20, fontWeight: .bold, color: Color(0xFF1E293B)),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: .bold,
+                      color: Color(0xFF1E293B),
+                    ),
                   ),
                   Text(
                     "${doctors.where((e) => e.isAvailable).length} online",
-                    style: TextStyle(fontWeight: .w600, color: Color(0xFF00BFA5)),
+                    style: TextStyle(
+                      fontWeight: .w600,
+                      color: Color(0xFF00BFA5),
+                    ),
                   ),
                 ],
               ),

@@ -5,7 +5,12 @@ class SpecialityCard extends StatelessWidget {
   final IconData icon;
   final Color color;
 
-  const SpecialityCard({super.key, required this.title, required this.icon, required this.color});
+  const SpecialityCard({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +25,11 @@ class SpecialityCard extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: color.withValues(alpha: .3), blurRadius: 8, offset: Offset(0, 4)),
+          BoxShadow(
+            color: color.withValues(alpha: .3),
+            blurRadius: 8,
+            offset: Offset(0, 4),
+          ),
         ],
       ),
       child: Column(
@@ -30,7 +39,11 @@ class SpecialityCard extends StatelessWidget {
           SizedBox(height: 8),
           Text(
             title,
-            style: TextStyle(color: Colors.white, fontWeight: .w600, fontSize: 12),
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: .w600,
+              fontSize: 12,
+            ),
             textAlign: .center,
           ),
         ],

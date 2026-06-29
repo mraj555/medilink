@@ -24,7 +24,9 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Inter',
         cardTheme: CardThemeData(
           elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadiusGeometry.circular(16),
+          ),
           color: Colors.white,
         ),
         appBarTheme: AppBarTheme(
