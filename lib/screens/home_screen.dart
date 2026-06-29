@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medilink/models/doctor.dart';
+import 'package:medilink/widgets/speciality_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -38,7 +39,77 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SafeArea(child: Column(children: [])),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: .05),
+                      blurRadius: 10,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search doctors',
+                    hintStyle: TextStyle(color: Colors.grey[400]),
+                    prefixIcon: Icon(Icons.search, color: Color(0xFF00BFA5)),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 120,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                children: [
+                  SpecialityCard(
+                    title: 'Cardiology',
+                    icon: Icons.favorite,
+                    color: const Color(0xFFE53935),
+                  ),
+                  SpecialityCard(
+                    title: 'Dermatology',
+                    icon: Icons.face,
+                    color: const Color(0xFFFFA726),
+                  ),
+                  SpecialityCard(
+                    title: 'Neurology',
+                    icon: Icons.psychology,
+                    color: const Color(0xFF5C6BC0),
+                  ),
+                  SpecialityCard(
+                    title: 'Orthopedic',
+                    icon: Icons.accessibility_new,
+                    color: const Color(0xFF26A69A),
+                  ),
+                  SpecialityCard(
+                    title: 'Pediatrics',
+                    icon: Icons.child_care,
+                    color: const Color(0xFF66BB6A),
+                  ),
+                  SpecialityCard(title: 'ENT', icon: Icons.hearing, color: const Color(0xFF8D6E63)),
+                  SpecialityCard(
+                    title: 'Gynecology',
+                    icon: Icons.pregnant_woman,
+                    color: const Color(0xFFEC407A),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
