@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medilink/models/doctor.dart';
+import 'package:medilink/widgets/doctor_card.dart';
 import 'package:medilink/widgets/speciality_card.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -105,6 +106,31 @@ class HomeScreen extends StatelessWidget {
                     color: const Color(0xFFEC407A),
                   ),
                 ],
+              ),
+            ),
+
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Text(
+                    "Available Doctors",
+                    style: TextStyle(fontSize: 20, fontWeight: .bold, color: Color(0xFF1E293B)),
+                  ),
+                  Text(
+                    "${doctors.where((e) => e.isAvailable).length} online",
+                    style: TextStyle(fontWeight: .w600, color: Color(0xFF00BFA5)),
+                  ),
+                ],
+              ),
+            ),
+
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                itemCount: doctors.length,
+                itemBuilder: (context, index) =>
+                    DoctorCard(context: context, doctor: doctors[index]),
               ),
             ),
           ],
