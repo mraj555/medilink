@@ -1,135 +1,156 @@
 # MediLink
 
-MediLink is a Flutter mobile app prototype for healthcare discovery and early-stage teleconsultation workflows. The codebase is built as a clean UI prototype with doctor browsing, specialties, and a scaffolded video call experience using ZEGOCLOUD prebuilt call components.
+MediLink is a Flutter-based healthcare discovery and teleconsultation prototype. It combines a polished doctor-discovery experience with a scaffolded video consultation flow using ZEGOCLOUD prebuilt UI components. The project is intentionally lightweight and is structured as a frontend-first prototype that is easy for the next developer to extend.
 
 ## Tech Stack
 
-- Flutter SDK / Dart
-- Material Design / custom theming
-- `zego_uikit`, `zego_uikit_prebuilt_call`, `zego_zimkit` for video call and communication support
-- `flutter_test` for widget testing
-- `flutter_lints` for lint rules and code quality guidance
-- Native targets: Android and iOS via Flutter platform folders
+- Flutter SDK with Dart
+- Material Design styling and custom theme configuration
+- Cupertino icons for platform-style visuals
+- ZEGOCLOUD SDKs:
+  - zego_uikit
+  - zego_uikit_prebuilt_call
+- Testing support via flutter_test
+- Linting and static analysis via flutter_lints
+- Native mobile targets: Android and iOS
 
 ## Architecture Overview
 
-The app uses a simple layered architecture with a clear separation between:
+The app follows a simple layered structure that keeps responsibilities separated:
 
-- app bootstrap and theme configuration
-- presentation screens
-- reusable UI components
-- domain models and sample data
-- third-party SDK configuration
+1. App bootstrap layer
+   - Initializes the Flutter app and global theme in the entry point.
+2. Presentation layer
+   - Screens such as the home experience and the consultation call experience live here.
+3. UI component layer
+   - Reusable widgets such as doctor cards and specialty cards are kept isolated.
+4. Domain/data layer
+   - The current app uses a local model and sample dataset rather than a remote API.
+5. Integration layer
+   - Third-party video calling logic is isolated behind the call screen and configuration utility.
 
-### Core Flow
+## High-Level Flow
 
-1. `lib/main.dart` boots the app and sets the global theme.
-2. `HomeScreen` renders the main doctor discovery interface.
-3. `Doctor.getDoctors()` supplies the static list of doctors.
-4. `HomeScreen` composes the layout using `SpecialityCard` and `DoctorCard` components.
-5. Tapping the call button on an available doctor navigates to `CallScreen`.
-6. `CallScreen` initializes the ZEGOCLOUD prebuilt call component with runtime call metadata.
+The current user journey is intentionally straightforward:
+
+1. The app starts from the main entry point and loads the home screen.
+2. The home screen renders a doctor discovery UI using sample doctor data.
+3. Specialty chips and doctor cards are composed as reusable UI pieces.
+4. Selecting a doctor with an available status opens the consultation screen.
+5. The consultation screen initializes the ZEGOCLOUD prebuilt call experience.
 
 ## Project Structure
 
 ```text
-android/                  # Native Android project configuration and Gradle setup
-ios/                      # Native iOS project configuration and Xcode workspace
+android/                  # Native Android configuration, Gradle setup, and platform integration
+ios/                      # Native iOS configuration and Xcode project files
 lib/
-  main.dart               # App entry point, MaterialApp, themes, and initial screen
+  main.dart               # App entry point, theme setup, and initial route bootstrap
   models/
-    doctor.dart           # Doctor entity, sample data, and local data provider
+    doctor.dart           # Doctor domain model and local sample data source
   screens/
-    home_screen.dart      # Main doctor listing and search screen
-    call_screen.dart      # One-on-one call screen built with ZEGOCLOUD prebuilt call SDK
+    home_screen.dart      # Main doctor discovery screen
+    call_screen.dart      # Video consultation screen using ZEGOCLOUD UI
   utils/
-    zego_config.dart      # ZEGOCLOUD appID/appSign configuration values
+    zego_config.dart      # Shared ZEGOCLOUD configuration values
   widgets/
-    doctor_card.dart      # Doctor item UI component and navigation action
-    speciality_card.dart  # Specialty chip UI component used in the home screen
+    doctor_card.dart      # Reusable doctor list item UI
+    speciality_card.dart  # Reusable specialty chip UI
 test/
-  widget_test.dart        # Flutter widget test scaffold
-analysis_options.yaml     # Linting rules and static analysis settings
-pubspec.yaml              # Dart/Flutter package configuration and dependency manifest
-README.md                 # Project overview and architecture documentation
+  widget_test.dart        # Basic widget test scaffold
+analysis_options.yaml     # Linting and analyzer rules
+pubspec.yaml              # Flutter package dependencies and project metadata
+README.md                 # Developer-facing project documentation
 ```
 
-## File Responsibilities
+## File Responsibilities and Connections
 
-- `lib/main.dart`
-  - Entrypoint for the app.
-  - Configures `MaterialApp`, theming, and initial route.
-  - Uses `HomeScreen` as the landing experience.
+### App bootstrap
 
-- `lib/screens/home_screen.dart`
-  - Builds the doctor discovery screen.
-  - Shows search, specialty cards, and the list of doctors.
-  - Loads the demo doctor list from `Doctor.getDoctors()`.
+- lib/main.dart
+  - Entry point for the application.
+  - Creates the MaterialApp instance.
+  - Applies the app theme and launches the home screen.
 
-- `lib/screens/call_screen.dart`
-  - Handles the outgoing consultation call screen.
-  - Uses `ZegoUIKitPrebuiltCall` with runtime-generated `userID`, `userName`, and `callID`.
-  - Renders the provider’s avatar and call UI config.
+### Home experience
 
-- `lib/widgets/doctor_card.dart`
-  - Renders each doctor row including image, rating, experience, and availability.
-  - Contains the call button that navigates to `CallScreen` only when the doctor is online.
+- lib/screens/home_screen.dart
+  - Represents the primary user-facing dashboard.
+  - Composes the search area, specialty selection UI, and doctor listing.
+  - Pulls doctor data from the local model layer.
 
-- `lib/widgets/speciality_card.dart`
-  - Displays a horizontal specialty chip.
-  - Keeps specialty UI isolated from the home screen layout.
+### Doctor data model
 
-- `lib/models/doctor.dart`
-  - Defines the `Doctor` domain model.
-  - Includes a static sample dataset used by the current app.
-  - Acts as the current contract for doctor profile data across the app.
+- lib/models/doctor.dart
+  - Defines the Doctor model structure.
+  - Stores the current static sample dataset used by the UI.
+  - Acts as the current contract for doctor information across the app.
 
-- `lib/utils/zego_config.dart`
-  - Centralizes ZEGOCLOUD SDK configuration values.
-  - Allows the call screen to remain implementation-focused rather than storing credentials inline.
+### Reusable UI building blocks
 
-- `android/` and `ios/`
-  - Contain native build, permissions, and runtime configuration required by Flutter.
-  - Required when adding device-level capabilities such as camera, microphone, or SDK platform integration.
+- lib/widgets/doctor_card.dart
+  - Renders each doctor entry in the list.
+  - Displays doctor details such as name, specialty, rating, experience, and availability.
+  - Triggers navigation to the call screen when the doctor is currently available.
 
-## Runtime Data and State
+- lib/widgets/speciality_card.dart
+  - Displays specialty chips in the UI.
+  - Keeps the specialty presentation logic separate from the main screen layout.
 
-- The app currently uses local, in-memory doctor data.
-- There is no external backend, repository layer, or state management package yet.
-- UI state is built declaratively through widget composition.
-- Expansion points include a service/data layer, state management solution, or API integration.
+### Consultation flow
 
-## Component Relationships
+- lib/screens/call_screen.dart
+  - Hosts the consultation call experience.
+  - Uses the ZEGOCLOUD prebuilt call widget with runtime-generated user and call metadata.
+  - Keeps the real-time calling implementation isolated from the rest of the app.
+
+- lib/utils/zego_config.dart
+  - Centralizes SDK configuration values used by the call screen.
+  - Prevents call-specific configuration from being embedded directly into the UI layer.
+
+### Platform layer
+
+- android/ and ios/
+  - Contain native settings and project files required for Flutter builds.
+  - Relevant when adding camera, microphone, permissions, or platform-specific SDK support.
+
+## Component Relationship Map
 
 ```text
 main.dart
-  └─> HomeScreen
-        ├─> Doctor.getDoctors()
-        ├─> SpecialityCard x N
-        └─> ListView of DoctorCard
-              └─> CallScreen (when available)
-                    └─> ZegoUIKitPrebuiltCall
+  └── HomeScreen
+        ├── Doctor.getDoctors()
+        ├── SpecialityCard
+        └── DoctorCard list
+              └── CallScreen
+                    └── ZegoUIKitPrebuiltCall
 ```
 
-## Extension Points for Next Developer
+## Current State of Data and State Management
 
-- Convert `Doctor.getDoctors()` from static sample data into a network-backed repository.
-- Add a dedicated state management layer using Riverpod, Provider, Bloc, Cubit, or similar.
-- Replace `HomeScreen` search field with real search filtering and specialty selection state.
-- Expand `CallScreen` to support real call lifecycle events, participants, and hangup flows.
-- Add authentication, appointment scheduling, chat, and patient profile screens.
-- Move reusable theming and layout patterns into shared widget or theme files.
+The project currently uses:
 
-## Notes on ZEGOCLOUD Integration
+- Local, in-memory doctor data
+- Stateless or declarative widget composition for UI rendering
+- No dedicated backend, repository layer, or external state-management package yet
 
-- The project already includes ZEGOCLOUD packages in `pubspec.yaml`.
-- `CallScreen` is wired to `ZegoUIKitPrebuiltCall` and expects configuration values from `lib/utils/zego_config.dart`.
-- This screen is the main integration point for real-time consultation UI.
+This makes the current structure ideal for a prototype, but it also indicates the natural next evolution points.
 
-## Recommended Organization Guidelines
+## Extension Points for the Next Developer
 
-- Keep screen-level layout and navigation inside `lib/screens/`.
-- Keep reusable UI pieces inside `lib/widgets/`.
-- Keep domain entities and data providers inside `lib/models/`.
-- Keep integration/config constants inside `lib/utils/`.
-- Keep platform-specific or native SDK wiring inside `android/` and `ios/`.
+The current architecture is already organized for gradual growth:
+
+- Replace the static doctor dataset with a repository backed by an API or service layer.
+- Introduce a formal state management approach such as Provider, Riverpod, Bloc, or Cubit.
+- Move screen-specific logic into view models or controllers as the app grows.
+- Expand the call screen into a complete consultation lifecycle with join, leave, and status handling.
+- Add authentication, appointment booking, chat, and patient profile flows.
+- Centralize shared styling and reusable layout patterns into a stronger theme or shared widget structure.
+
+## Development Notes
+
+- Keep screen and navigation logic inside the screens folder.
+- Keep reusable visual components inside the widgets folder.
+- Keep model definitions and sample data inside the models folder.
+- Keep SDK-specific configuration inside the utils folder.
+- Keep platform-specific integration details inside the Android and iOS folders.
